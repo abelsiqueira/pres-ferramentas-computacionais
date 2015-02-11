@@ -1,0 +1,8 @@
+    ---
+    algname: Alpha
+    success: converged
+    free_format: True
+    ---
+    10FOLDTR   converged  4.597780e+01 +0.000000e+00 +6.828550e-07 +0.000000e+00
+    DIXCHLNV   short      1.328150e+01 +9.864680e+14 +1.009790e-13 +5.572540e+08
+    BURKEHAN   stationary 4.816060e-04 -3.437210e-08 +1.010450e+00 +2.464910e-03
