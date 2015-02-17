@@ -60,6 +60,21 @@
   \end{minipage}
 }
 
+\begin{frame}[fragile]
+  \ctr{CUTEst.jl}
+  \begin{itemize}
+    \item Três interfaces
+    \begin{itemize}
+      \item Interface igual a do CUTEst. \\
+        \verb+CUTEst.cfn(st, nvar, ncon, x, f, g, libname)+
+      \item Interface intermediária. \\
+        \verb+(f,c) = CUTEst.cfn(nvar, ncon, x, libname)+
+      \item Interface para Julia. \\
+        \verb+(f,c) = objcons(nlp, x)+
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
 \myframe{
   \ctr{Editores e IDEs}
   \begin{itemize}
