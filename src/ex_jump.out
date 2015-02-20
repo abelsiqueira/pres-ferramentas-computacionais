@@ -1,0 +1,8 @@
+Max x + 2 y
+Subject to
+ 2 x + 3 y ≤ 11
+ x ≥ 0
+ y free, integer
+Objective: 7.0
+x = 0.9999999999999998
+y = 3.0
