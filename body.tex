@@ -7,6 +7,24 @@
 }
 
 \myframe{
+  \ctr{Resumo}
+  \begin{itemize}
+    \item Aprenda outras linguagens: Python ou Ruby; Shell; Makefile.
+    \item Conheça a linguagem Julia
+    \item Escolha um editor e um ambiente de desenvolvimento.
+    \item perprof-py: Uma ferramenta para gerar perfis de desempenho.
+    \item git: Uma ferramenta para controle de versão.
+      \begin{itemize}
+        \item GitHub para colocar o seu código;
+        \item Travis CI para testá-lo automaticamente;
+        \item Coveralls.io para saber o que está sendo testado.
+      \end{itemize}
+    \item Software Carpentry.
+    \item Pacotes TikZ e PgfPlots do \LaTeX: para fazer gráficos.
+  \end{itemize}
+}
+
+\myframe{
   \ctr{Linguagens}
 
   \pause
@@ -52,51 +70,6 @@
   \end{itemize}
 }
 
-\begin{frame}[fragile]
-  \ctr{Julia}
-\begin{lstlisting}
-julia> n = 1000;
-julia> A = rand(n,n):
-julia> e = ones(n);
-julia> b = A*e;
-julia> x = A\b;
-julia> norm(x-e) + norm(A*x-b)
-4.4018481691925754e-11
-\end{lstlisting}
-\begin{lstlisting}
-julia> f(x) = exp(-x)-x;
-julia> (a,b) = (0,1);
-julia> while b-a > 1e-6
-           m = (a+b)/2;
-           (a,b) = f(m)*f(a) > 0 ? (m,b) : (a,m);
-       end
-julia> (a,b)
-(0.5671424865722656,0.567143440246582)
-julia> f((a+b)/2)
-5.12456450496579e-7
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]
-  \ctr{Julia}
-\begin{lstlisting}
-julia> exitflags = rand([0,1,2,-10], 1, 5)
-1x5 Array{Int64,2}:
- 2  1  1  -10  2
-julia> flags = Dict{Int,String}(0 => "Success",
-           1 => "Time limit reached",
-           2 => "Maximum number of iter",
-           -10 => "Out of memory");
-julia> [flags[i] for i in exitflags]
-5-element Array{Any,1}:
- "Maximum number of iter"
- "Time limit reached"
- "Time limit reached"
- "Out of memory"
- "Maximum number of iter"
-\end{lstlisting}
-\end{frame}
-
 \myframe{
   \ctr{JuliaOpt}
   \begin{minipage}{0.2\textwidth}
@@ -109,24 +82,10 @@ julia> [flags[i] for i in exitflags]
       \item Linguagens de modelagem {\tt JuMP} e {\tt Convex}.
       \item Implementações de softwares tradicionais de otimização puramente em
         Julia.
+      \item Implementações mais robustas usando códigos de baixo nível.
     \end{itemize}
   \end{minipage}
 }
-
-\begin{frame}[fragile,c]
-  \ctr{JuliaOpt - JuMP}
-\lstinputlisting[title=\tiny\lstname]{src/ex_jump.jl}
-\end{frame}
-
-\begin{frame}[fragile,c]
-  \ctr{JuliaOpt - JuMP}
-\begin{lstlisting}
-julia> Pkg.add("JuMP")
-julia> Pkg.add("Cbc")
-julia> include("ex_jump.jl")
-\end{lstlisting}
-\lstinputlisting[title=\tiny Saída]{src/ex_jump.out}
-\end{frame}
 
 \begin{frame}[fragile]
   \ctr{CUTEst.jl}
@@ -143,74 +102,6 @@ julia> include("ex_jump.jl")
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-  \ctr{CUTEst.jl}
-\begin{lstlisting}
-julia> Pkg.add("git://github.com/optimizers/NLP.jl")
-julia> Pkg.add("git://github.com/abelsiqueira/CUTEst.jl")
-julia> using CUTEst
-julia> nlp = CUTEstModel("HS35")
-
- Problem name: HS35
-
-  Double precision version will be formed
-
-  The objective function uses 1 nonlinear group
-
-  There is 1 linear inequality constraint
-
-  There are 3 variables bounded only from below
-
-
-  File successfully decoded
-  Minimization problem HS35
-  nvar = 3, ncon = 1 (1 linear)
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]
-  \ctr{CUTEst.jl}
-\begin{lstlisting}
-julia> print(nlp)
-Minimization problem HS35
-nvar = 3, ncon = 1 (1 linear)
-lvar = 1x3 Array{Float64,2}:
- 0.0  0.0  0.0
-uvar = 1x3 Array{Float64,2}:
- 1.0e20  1.0e20  1.0e20
-lcon = 1x1 Array{Float64,2}:
- 0.0
-ucon = 1x1 Array{Float64,2}:
- 1.0e20
-x0 = 1x3 Array{Float64,2}:
- 0.5  0.5  0.5
-y0 = 1x1 Array{Float64,2}:
- 0.0
-nnzh = 5
-nnzj = 3
-linear constraints:    1x1 Array{Int64,2}:
- 1
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]
-  \ctr{CUTEst.jl}
-\begin{lstlisting}
-julia> (f,c) = objcons(nlp, nlp.meta.x0)
-(2.25,[1.0])
-julia> (f,c) = CUTEst.jl_cfn(nlp.meta.nvar, nlp.meta.ncon, nlp.meta.x0, nlp.libname)
-(2.25,[1.0])
-julia> st = Array(Cint, 1);
-julia> f = Array(Cdouble, 1);
-julia> c = Array(Cdouble, nlp.meta.ncon);
-julia> nvar = [int32(nlp.meta.nvar)]
-julia> ncon = [int32(nlp.meta.ncon)]
-julia> CUTEst.cfn(st, nvar, ncon, nlp.meta.x0, f, c, nlp.libname)
-julia> (f,c)
-([2.25],[1.0])
-\end{lstlisting}
-\end{frame}
-
 \myframe{
   \ctr{Editores e IDEs}
   \begin{itemize}
@@ -223,14 +114,15 @@ julia> (f,c)
   \end{itemize}
 }
 
-\myframe{
-  \ctr{Eu}
+\myframetop{
+  \ctr{Perprof-py}
   \begin{itemize}
-    \item uso Vim com GNU Screen.
-    \item Divido a tela em 2: um lado com o shell pra compilar e o outro para
-      edição.
-    \item Para LaTeX, deixo um lado com o PDF. Num dos screens, uso o
-      {\tt latexmk} rodando continuamente.
+    \item Uma ferramenta que gera perfis de desempenho (Performance Profile).
+    \item Roda no terminal e funciona no GNU/Linux, no OSX e no Windows.
+    \item Usa dados do usuário, então não está preso à nenhuma linguagem.
+    \item Implementado em Python 3, usa MatplotLib para gráficos em PNG, ou
+      TikZ/Pgfplots para PDFs.
+    \item Muitas opções.
   \end{itemize}
 }
 
@@ -282,7 +174,7 @@ julia> (f,c)
 \myframe{
   \ctr{Git}
   \begin{center}
-    \includegraphics[height=0.7\textheight]{assets/phd.png}
+    \includegraphics[height=0.8\textheight]{assets/phd.png}
   \end{center}
 }
 
@@ -291,22 +183,25 @@ julia> (f,c)
   \begin{center}
     \includegraphics[height=0.5\textheight]{assets/version1.png}
     \hspace{0.1cm}
-    \pause
     \includegraphics[height=0.5\textheight]{assets/version2.png}
     \hspace{0.1cm}
-    \pause
     \includegraphics[height=0.5\textheight]{assets/version3.png}
     \hspace{0.1cm}
-    \pause
     \includegraphics[height=0.5\textheight]{assets/version4.png}
     \hspace{0.1cm}
-    \pause
     \includegraphics[height=0.5\textheight]{assets/version5.png}
   \end{center}
 }
 
 \myframe{
-  \ctr{Código aberto}
+  \ctr{Git}
+  \begin{center}
+    \includegraphics[height=0.8\textheight]{assets/newtork.png}
+  \end{center}
+}
+
+\myframe{
+  \ctr{Código aberto usando Git}
   \begin{itemize}
     \item GitHub
     \item Bitbucket
@@ -321,30 +216,19 @@ julia> (f,c)
   \ctr{Git remoto - GitHub}
   \begin{center}
     \begin{tikzpicture}[thick, node distance=3cm, bend angle=20, shorten <=1pt,
-      shorten >=1pt, bend right]
+        shorten >=1pt, bend right]
       \node[local] (voce)   {Você};
-      \onslide<2->{
-        \node[remoto] (remote) [above right of=voce] {Remoto};
-        \draw[->] (voce) to (remote);
-      }
-      \onslide<4->{
-        \draw[->] (remote) to (voce);
-      }
-      \onslide<3->{
-        \node[local] (note) [below right of=remote] {Notebook};
-        \draw[->] (note) to (remote);
-        \draw[->] (remote) to (note);
-      }
-      \onslide<5->{
-        \node[remoto] (fork) [above of=remote] {Fork};
-        \draw[->] (remote) to (fork);
-      }
-      \onslide<6->{
-        \draw[->] (fork) to (remote);
-        \draw[->] (fork) to (voce);
-        \draw[->, bend left] (fork) to (note);
-      }
-
+      \node[remoto] (remote) [above right of=voce] {Remoto};
+      \draw[->] (voce) to (remote);
+      \draw[->] (remote) to (voce);
+      \node[local] (note) [below right of=remote] {Notebook};
+      \draw[->] (note) to (remote);
+      \draw[->] (remote) to (note);
+      \node[remoto] (fork) [above of=remote] {Fork};
+      \draw[->] (remote) to (fork);
+      \draw[->] (fork) to (remote);
+      \draw[->] (fork) to (voce);
+      \draw[->, bend left] (fork) to (note);
     \end{tikzpicture}
   \end{center}
 }
@@ -364,7 +248,7 @@ julia> (f,c)
   \end{itemize}
 }
 
-\myframe{
+\myframetop{
   \ctr{\includegraphics[scale=0.3]{assets/sc.png}}
   \begin{itemize}
     \item Uma organização sem fins lucrativos cujos membros ensinam
@@ -375,7 +259,7 @@ julia> (f,c)
   \end{itemize}
 }
 
-\myframe{
+\myframetop{
   \ctr{\includegraphics[scale=0.3]{assets/sc.png}}
   \begin{itemize}
     \item Existe um custo administrativo, mais o custo de transporte e
@@ -423,30 +307,6 @@ julia> (f,c)
   \end{center}
 }
 
-\begin{frame}[fragile]
-  \ctr{TikZ}
-\begin{lstlisting}
-\begin{tikzpicture}
-\path[draw,->] (0,0) -- (30:1cm) -- (60:2cm);
-\draw[<->] (3,0) -- ++(30:1cm) -- ++(60:1cm);
-\draw[help lines, shift={(-2,-2)}] (-0.5,-2.5) grid (4.5,1.5);
-\path[fill,draw=red,fill=black,thick,shift={(-2,-2)}]
-  (0,0) node[left,red] {O} -- (2,1) node[above,red] {A}
-                      -| (4,0) node[right,red] {B}
-                      .. controls (2,0) .. (2,-2) node[below,red] {C}
-                      to[out=200,in=30] (0,-2) node[below left, red] {D}
-                      -- cycle;
-\draw (-2,1) circle[radius=1];
-\draw (-2,1) circle[x radius=0.3, y radius=0.8, rotate=30];
-\node[draw,rectangle,black] (p1) at (4,-1) {$N_1$};
-\coordinate[draw,circle] (p2) at (4,-2);
-\node[draw,rectangle,black] (p3) at (5,-2) {$N_2$};
-\draw (p1) -- (p2) -- (p3);
-\draw[->] (p3) to[bend right] (p1);
-\end{tikzpicture}
-\end{lstlisting}
-\end{frame}
-
 \begin{frame}
   \ctr{TikZ}
   \begin{center}
@@ -460,21 +320,6 @@ julia> (f,c)
     \draw[green,thick,domain=0:360]  plot({1+cos(\x)},{2.5+sin(\x)});
   \end{tikzpicture}
   \end{center}
-\end{frame}
-
-\begin{frame}[fragile]
-  \ctr{Tikz}
-  \begin{lstlisting}
-\begin{tikzpicture}[domain=-0.2:4.2]
-\draw[very thin,gray] (-0.1,-1.1) grid (4.1,4.1);
-\draw[->] (-0.2,0) -- (4.2,0) node[right] {$x$};
-\draw[->] (0,-1.2) -- (0,4.2) node[above] {$y$};
-\draw[red]  plot(\x,{sin(\x r)}) node[right] {$f(x)=\sin x$};
-\draw[blue,dashed] plot(\x,\x) node[right] {$f(x)=x$};
-\draw[orange] plot(\x,{0.05*exp(\x)}) node[right] {$f(x)=0.05e^x$};
-\draw[green,thick,domain=0:360]  plot({1+cos(\x)},{2.5+sin(\x)});
-\end{tikzpicture}
-  \end{lstlisting}
 \end{frame}
 
 \begin{frame}
