@@ -32,28 +32,32 @@
     \begin{center}
       Fortran \qquad C \\
       MatLab \\ \vspace{0.7cm}
-      \onslide<3->{
-      Python \qquad Ruby \qquad Perl \\
-      PHP \qquad Java \qquad Javascript \\
-      C++ \qquad Shell \qquad Objective C \\
-      C\# \qquad Assembly \qquad SQL \qquad R \\
-      Makefile \qquad HTML \qquad Markdown
-      }
     \end{center}
   \end{minipage}
   \begin{minipage}{0.35\textwidth}
     \begin{flushleft}
       Velocidade \\
       Praticidade \\ \vspace{0.7cm}
-      \onslide<3->{
-      Fazer um site; \\
-      Parsear texto; \\
-      Criar interfaces gráficas; \\
-      Criar apps; \\
-      Automatizar testes;
-      }
     \end{flushleft}
   \end{minipage}
+  \pause
+  \hrule
+  \begin{center}
+    Fazer um site \qquad
+    Parsear texto \qquad
+    Criar interfaces gráficas \qquad
+    Criar apps \qquad
+    Automatizar testes
+  \end{center}
+  \pause
+  \hrule
+  \begin{center}
+    Python \qquad Ruby \qquad Perl \qquad
+    PHP \qquad Java \qquad Javascript \qquad
+    C++ \qquad Shell \qquad Objective C \qquad
+    C\# \qquad Assembly \qquad SQL \qquad R \qquad
+    Makefile \qquad HTML \qquad Markdown
+  \end{center}
 }
 
 \myframe{
@@ -61,12 +65,11 @@
   ``... a {\bf high-level}, {\bf high-performance} dynamic programming language
   for technical computing, with {\bf syntax that is familiar} to users of other
   technical computing environments. ''
-  \pause
   \begin{itemize}
-    \item<2-> Usa C e Fortran no código;
-    \item<3-> Substitui o MatLab;
-    \item<4-> Compatibilidade com C e Fortran;
-    \item<5-> Velocidade.
+    \item Usa C e Fortran no código;
+    \item Substitui o MatLab;
+    \item Compatibilidade com C e Fortran;
+    \item Velocidade.
   \end{itemize}
 }
 
@@ -93,9 +96,9 @@
     \item Três interfaces
     \begin{itemize}
       \item Interface igual a do CUTEst. \\
-        \verb+CUTEst.cfn(st, nvar, ncon, x, f, g, libname)+
+        \verb+CUTEst.cfn(st, nvar, ncon, x, f, c, libname)+
       \item Interface intermediária. \\
-        \verb+(f,c) = CUTEst.cfn(nvar, ncon, x, libname)+
+        \verb+(f,c) = CUTEst.jl_cfn(nvar, ncon, x, libname)+
       \item Interface para Julia. \\
         \verb+(f,c) = objcons(nlp, x)+
     \end{itemize}
@@ -154,19 +157,18 @@
     }
     \only<3>{
       \includegraphics[height=0.6\textheight]{assets/abc-semilog-bw-tikz.png} \\
-      {\scriptsize \tt perprof-py *.table \ddash semilog \ddash tikz \ddash semilog
-      \ddash black-and-white -o abc-bw}
+      {\scriptsize \tt perprof-py *.table \ddash semilog \ddash tikz \ddash
+          black-and-white -o abc-bw}
     }
     \only<4>{
       \includegraphics[height=0.6\textheight]{assets/abc-100-tikz.png} \\
-      {\scriptsize \tt perprof-py *.table \ddash semilog \ddash tikz \ddash
-        semilog \ddash tau 100
-      -o abc-100}
+      {\scriptsize \tt perprof-py *.table \ddash semilog \ddash tikz \ddash tau
+          100 -o abc-100}
     }
     \only<5>{
       \includegraphics[height=0.6\textheight]{assets/abc-semilog-hs-tikz.png} \\
-      {\scriptsize \tt perprof-py *.table \ddash semilog \ddash tikz \ddash semilog
-      \ddash subset hs.subset -o abc-hs}
+      {\scriptsize \tt perprof-py *.table \ddash semilog \ddash tikz \ddash
+          subset hs.subset -o abc-hs}
     }
   \end{center}
 }
@@ -190,13 +192,6 @@
     \includegraphics[height=0.5\textheight]{assets/version4.png}
     \hspace{0.1cm}
     \includegraphics[height=0.5\textheight]{assets/version5.png}
-  \end{center}
-}
-
-\myframe{
-  \ctr{Git}
-  \begin{center}
-    \includegraphics[height=0.8\textheight]{assets/newtork.png}
   \end{center}
 }
 
@@ -230,6 +225,13 @@
       \draw[->] (fork) to (voce);
       \draw[->, bend left] (fork) to (note);
     \end{tikzpicture}
+  \end{center}
+}
+
+\myframe{
+  \ctr{GitHub}
+  \begin{center}
+    \includegraphics[height=0.8\textheight]{assets/newtork.png}
   \end{center}
 }
 
@@ -283,18 +285,18 @@
   \end{itemize}
 }
 
-\myframe{
+\myframetop{
   \ctr{TikZ}
   \begin{center}
   \begin{tikzpicture}
     \path[draw,->] (0,0) -- (30:1cm) -- (60:2cm);
     \draw[<->] (3,0) -- ++(30:1cm) -- ++(60:1cm);
-    \draw[help lines, shift={(-2,-2)}] (-0.5,-2.5) grid (4.5,1.5);
+    \draw[help lines, shift={(-2,-2)}] (-0.5,-2.3) grid (4.5,1.5);
     \path[fill,draw=red,fill=black,thick,shift={(-2,-2)}]
       (0,0) node[left,red] {O} -- (2,1) node[above,red] {A}
                           -| (4,0) node[right,red] {B}
-                          .. controls (2,0) .. (2,-2) node[below,red] {C}
-                          to[out=200,in=30] (0,-2) node[below left, red] {D}
+                          .. controls (2,0) .. (2,-2) node[right,red] {C}
+                          to[out=200,in=30] (0,-2) node[left, red] {D}
                           -- cycle;
     \draw (-2,1) circle[radius=1];
     \draw (-2,1) circle[x radius=0.3, y radius=0.8, rotate=30];
@@ -307,7 +309,7 @@
   \end{center}
 }
 
-\begin{frame}
+\myframetop{
   \ctr{TikZ}
   \begin{center}
     \begin{tikzpicture}[domain=-0.2:4.2]
@@ -320,9 +322,9 @@
     \draw[green,thick,domain=0:360]  plot({1+cos(\x)},{2.5+sin(\x)});
   \end{tikzpicture}
   \end{center}
-\end{frame}
+}
 
-\begin{frame}
+\myframetop{
   \ctr{TikZ}
   \begin{center}
     \begin{tikzpicture}[scale=2]
@@ -337,9 +339,9 @@
     \draw[blue] (1.5,1.125) -- (1.5,0) node[below] {$b$};
   \end{tikzpicture}
   \end{center}
-\end{frame}
+}
 
-\myframe{
+\myframetop{
   \ctr{PgfPlots}
   \begin{center}
     \only<1>{
